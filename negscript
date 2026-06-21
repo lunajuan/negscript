@@ -8,8 +8,8 @@ COLOR_YELLOW='\033[1;33m'
 COLOR_RESET='\033[0m'
 
 # Hardcoded reference to your production repository raw file link
-# REPLACEMENT NEEDED: Change 'lunajuan' and 'negscript' to match your GitHub setup!
-GITHUB_RAW_URL="https://raw.githubusercontent.com/lunajuan/negscript/main/negscript"
+# REPLACEMENT NEEDED: Change 'YOUR_USERNAME' and 'YOUR_REPO_NAME' to match your GitHub setup!
+GITHUB_RAW_URL="https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO_NAME/main/negscript"
 INSTALL_PATH="/usr/local/bin/negscript"
 
 # Check if exiftool is installed (not needed for the --update flag itself)
@@ -77,3 +77,39 @@ apply_tags() {
 }
 
 update_script() {
+    # Check if the script is running with write permissions to /usr/local/bin
+    if [ ! -w "$INSTALL_PATH" ] && [ "$EUID" -ne 0 ]; then
+        echo -e "${COLOR_RED}Permission Denied:${COLOR_RESET} You must run the update command using sudo."
+        echo "Try: sudo negscript --update"
+        exit 1
+    fi
+
+    echo -e "${COLOR_BLUE}Checking GitHub for updates...${COLOR_RESET}"
+    
+    # Download the latest file directly to the system bin directory
+    curl -fsSL "$GITHUB_RAW_URL" -o "$INSTALL_PATH"
+    
+    if [ $? -eq 0 ]; then
+        chmod +x "$INSTALL_PATH"
+        echo -e "${COLOR_GREEN}Success! negscript has been updated to the latest main branch version.${COLOR_RESET}"
+    else
+        echo -e "${COLOR_RED}Update failed.${COLOR_RESET} Please check your internet connection or verify the GITHUB_RAW_URL string inside the script."
+        exit 1
+    fi
+}
+
+# Command line parsing
+case "$1" in
+    -s|--scaffold)
+        scaffold_csv
+        ;;
+    -t|--tag)
+        apply_tags
+        ;;
+    -u|--update)
+        update_script
+        ;;
+    -h|--help|*)
+        show_help
+        ;;
+esac
