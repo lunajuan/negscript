@@ -24,7 +24,7 @@ brew install exiftool
 Run the following command in your terminal to download the latest version, install it globally to your local binary path, and grant execution permissions:
 
 ```bash
-sudo curl -fsSL [https://raw.githubusercontent.com/lunajuan/negscript/main/negscript](https://raw.githubusercontent.com/lunajuan/negscript/main/negscript) -o /usr/local/bin/negscript && sudo chmod +x /usr/local/bin/negscript
+sudo curl -fsSL https://raw.githubusercontent.com/lunajuan/negscript/main/negscript -o /usr/local/bin/negscript && sudo chmod +x /usr/local/bin/negscript
 
 ```
 
@@ -89,7 +89,7 @@ Clone your repository into a local coding project folder:
 
 ```bash
 cd ~/Documents/Projects
-git clone [https://github.com/lunajuan/negscript.git](https://github.com/lunajuan/negscript.git)
+git clone https://github.com/lunajuan/negscript.git
 cd negscript
 
 ```
