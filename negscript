@@ -1,0 +1,79 @@
+#!/bin/bash
+# negscript: A helper utility to batch-tag film scans via ExifTool and a CSV scaffold.
+
+COLOR_BLUE='\033[0;34m'
+COLOR_GREEN='\033[0;32m'
+COLOR_RED='\033[0;31m'
+COLOR_YELLOW='\033[1;33m'
+COLOR_RESET='\033[0m'
+
+# Hardcoded reference to your production repository raw file link
+# REPLACEMENT NEEDED: Change 'lunajuan' and 'negscript' to match your GitHub setup!
+GITHUB_RAW_URL="https://raw.githubusercontent.com/lunajuan/negscript/main/negscript"
+INSTALL_PATH="/usr/local/bin/negscript"
+
+# Check if exiftool is installed (not needed for the --update flag itself)
+check_dependencies() {
+    if ! command -v exiftool &> /dev/null; then
+        echo -e "${COLOR_RED}Error: exiftool is not installed.${COLOR_RESET}"
+        echo "Install it via Homebrew: brew install exiftool"
+        echo "Or download the package installer from: https://exiftool.org/"
+        exit 1
+    fi
+}
+
+show_help() {
+    echo -e "${COLOR_BLUE}Usage:${COLOR_RESET} negscript [option]"
+    echo ""
+    echo "Options:"
+    echo "  -s, --scaffold    Scan directory for TIFF files and generate a metadata.csv"
+    echo "  -t, --tag         Apply values from metadata.csv back to the original TIFF files"
+    echo "  -u, --update      Pull the latest version of negscript directly from GitHub"
+    echo "  -h, --help        Show this help message"
+}
+
+scaffold_csv() {
+    check_dependencies
+    if [ -f "metadata.csv" ]; then
+        echo -e "${COLOR_YELLOW}Warning: metadata.csv already exists in this folder.${COLOR_RESET}"
+        read -p "Do you want to overwrite it? (y/n): " confirm
+        if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
+            echo "Operation cancelled."
+            exit 0
+        fi
+    fi
+
+    echo -e "${COLOR_BLUE}Scanning directory for TIFF files...${COLOR_RESET}"
+    
+    # Generate CSV with basic tagging blocks
+    exiftool -common -SourceFile -AllDates -Description -Keywords -ext tif -csv . > metadata.csv
+    
+    if [ $? -eq 0 ]; then
+        echo -e "${COLOR_GREEN}Success! metadata.csv has been created.${COLOR_RESET}"
+        echo "Open it in VS Code or Excel, edit your fields, and run 'negscript --tag' when ready."
+    else
+        echo -e "${COLOR_RED}Failed to generate metadata.csv.${COLOR_RESET}"
+    fi
+}
+
+apply_tags() {
+    check_dependencies
+    if [ ! -f "metadata.csv" ]; then
+        echo -e "${COLOR_RED}Error: metadata.csv not found in this folder.${COLOR_RESET}"
+        echo "Run 'negscript --scaffold' first to generate one."
+        exit 1
+    fi
+
+    echo -e "${COLOR_BLUE}Applying metadata from CSV to files...${COLOR_RESET}"
+    
+    # Process the CSV file back into the TIFF file headers
+    exiftool -csv=metadata.csv -overwrite_original -ext tif .
+    
+    if [ $? -eq 0 ]; then
+        echo -e "${COLOR_GREEN}Successfully wrote metadata to all files!${COLOR_RESET}"
+    else
+        echo -e "${COLOR_RED}Error writing metadata to files.${COLOR_RESET}"
+    fi
+}
+
+update_script() {
