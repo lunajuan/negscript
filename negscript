@@ -8,8 +8,7 @@ COLOR_YELLOW='\033[1;33m'
 COLOR_RESET='\033[0m'
 
 # Hardcoded reference to your production repository raw file link
-# REPLACEMENT NEEDED: Change 'YOUR_USERNAME' and 'YOUR_REPO_NAME' to match your GitHub setup!
-GITHUB_RAW_URL="https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO_NAME/main/negscript"
+GITHUB_RAW_URL="https://raw.githubusercontent.com/lunajuan/negscript/main/negscript"
 INSTALL_PATH="/usr/local/bin/negscript"
 
 # Check if exiftool is installed (not needed for the --update flag itself)
