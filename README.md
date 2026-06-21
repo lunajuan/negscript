@@ -1,12 +1,12 @@
-# negascript
+# negscript
 
-A lightweight, open-source command-line utility for analog film archivers. `negascript` orchestrates batch-tagging for raw film negative scans by generating a simple, editable CSV spreadsheet scaffold via `ExifTool`, allowing you to safely log historical dates, captions, and keywords before importing frames into non-destructive raw editors like Darktable.
+A lightweight, open-source command-line utility for analog film archivers. `negscript` orchestrates batch-tagging for raw film negative scans by generating a simple, editable CSV spreadsheet scaffold via `ExifTool`, allowing you to safely log historical dates, captions, and keywords before importing frames into non-destructive raw editors like Darktable.
 
 ---
 
 ## 📥 Installation
 
-`negascript` runs globally as a native system utility on macOS and Linux.
+`negscript` runs globally as a native system utility on macOS and Linux.
 
 ### 1. Prerequisites
 This tool requires **ExifTool** to read and write metadata blocks. If you don't have it installed, run:
@@ -32,7 +32,7 @@ sudo curl -fsSL https://raw.githubusercontent.com/lunajuan/negscript/main/negscr
 
 ## 🚀 How to Use
 
-`negascript` splits your tagging workflow into two simple steps: creating a spreadsheet and baking it into your files.
+`negscript` splits your tagging workflow into two simple steps: creating a spreadsheet and baking it into your files.
 
 ### Step 1: Scaffold your Metadata Sheet
 
@@ -49,7 +49,7 @@ This scans the folder and generates a `metadata.csv` file matching every image's
 
 Open `metadata.csv` in VS Code, Excel, or any text editor.
 
-Because metadata relies on universal imaging standards (EXIF, IPTC, and XMP), you cannot invent custom column headers (like `random`). `negscript` expects specific, standard fields so that applications like **Synology Photos**, **Apple Photos**, and **Darktable** can index them automatically.
+Because metadata relies on universal imaging standards (EXIF, IPTC, and XMP), you cannot invent custom column headers (like `random`). `negscript` expects specific, standard fields so that applications like **Apple Photos**, and **Darktable** can index them automatically.
 
 Add your metadata to the following standardized columns:
 
@@ -77,13 +77,13 @@ negscript --tag
 
 ```
 
-`negascript` processes the spreadsheet rows, bakes the EXIF/IPTC information permanently into the files, and automatically cleans up temporary files. These tags will now be indexed perfectly by platforms like Synology Photos or Apple Photos.
+`negscript` processes the spreadsheet rows, bakes the EXIF/IPTC information permanently into the files, and automatically cleans up temporary files. These tags will now be indexed perfectly by platforms like Synology Photos or Apple Photos.
 
 ---
 
 ## 🔄 Updating
 
-You do not need to repeat the manual download steps to update the tool. `negascript` features a built-in self-updater. Simply run:
+You do not need to repeat the manual download steps to update the tool. `negscript` features a built-in self-updater. Simply run:
 
 ```bash
 sudo negscript --update
