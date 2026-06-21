@@ -47,12 +47,27 @@ This scans the folder and generates a `metadata.csv` file matching every image's
 
 ### Step 2: Fill Out Your Roll Details
 
-Open `metadata.csv` in VS Code, Excel, or any text editor. Fill out the empty columns for your entire roll:
+Open `metadata.csv` in VS Code, Excel, or any text editor.
 
-* **AllDates:** Input your historical capture timeline using the format `YYYY:MM:DD HH:MM:SS` (e.g., `2026:03:08 11:00:00`).
-* **Description:** A caption or note about the frame.
-* **Keywords:** Comma-separated tags (e.g., `Japan, vacation, landscape`).
+Because metadata relies on universal imaging standards (EXIF, IPTC, and XMP), you cannot invent custom column headers (like `random`). `negscript` expects specific, standard fields so that applications like **Synology Photos**, **Apple Photos**, and **Darktable** can index them automatically.
 
+Add your metadata to the following standardized columns:
+
+| Column Heading | Expected Format | Real-World Example | Destination / System Mapping |
+| --- | --- | --- | --- |
+| **`AllDates`** | `YYYY:MM:DD HH:MM:SS` | `2026:03:08 11:00:00` | Chronological Timeline sorting |
+| **`Description`** | Clear-text sentence | `Family dinner on the back porch.` | Image Caption / Notes block |
+| **`Keywords`** | Comma-separated strings | `Mexico, vacation, landscape` | Searchable tags & smart albums |
+| **`Make`** | Text string | `Olympus` | Camera Manufacturer field |
+| **`Model`** | Text string | `OM-1` | Camera Hardware model field |
+
+#### Example of a completed CSV row:
+
+```text
+SourceFile,FileName,FileSize,ImageSize,AllDates,Description,Keywords,Make,Model
+./img01.tif,img01.tif,228 MB,5115x7421,2026:03:08 11:00:00,Testing the vintage glass,dog, yard, summer,Olympus,OM-1
+
+```
 ### Step 3: Bake Metadata to Files
 
 Save the CSV file, return to your terminal, and execute:
